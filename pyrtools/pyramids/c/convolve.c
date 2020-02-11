@@ -77,11 +77,11 @@ int internal_reduce(image, x_dim, y_dim, filt, temp, x_fdim, y_fdim,
   register image_type *result;
   register int x_step, y_step;
   int x_start, y_start;
-  int x_stop, y_stop;     
-  image_type *filt; 
+  int x_stop, y_stop;
+  image_type *filt;
   int y_dim, y_fdim;
   char *edges;
-  { 
+  {
   register double sum;
   register int filt_pos, im_pos, x_filt_stop;
   register int x_pos, filt_size = x_fdim*y_fdim;
@@ -106,12 +106,11 @@ int internal_reduce(image, x_dim, y_dim, filt, temp, x_fdim, y_fdim,
   fp = fopen("out.txt", "a");
   for(i=0; i<x_dim*y_dim; i++)
     printf("image[%d] = %f\n", i, image[i]);
-
   for(i=0; i<x_fdim*y_fdim; i++)
     printf("filter[%d] = %f\n", i, filt[i]);
   fclose(fp);
   */
-  
+
   /* shift start/stop coords to filter upper left hand corner */
   x_start -= x_fmid;   y_start -=  y_fmid;
   x_stop -=  x_fmid;   y_stop -=  y_fmid;
@@ -134,17 +133,17 @@ int internal_reduce(image, x_dim, y_dim, filt, temp, x_fdim, y_fdim,
     (*reflect)(filt,x_fdim,y_fdim,0,y_pos-1,temp,REDUCE);
     for (;				      /* TOP EDGE */
 	 x_pos<x_ctr_stop;
-	 x_pos+=x_step, res_pos++) 
+	 x_pos+=x_step, res_pos++)
       INPROD(x_pos,0)
 
     for (;				      /* TOP-RIGHT CORNER */
 	 x_pos<x_stop;
-	 x_pos+=x_step, res_pos++) 
+	 x_pos+=x_step, res_pos++)
       {
       (*reflect)(filt,x_fdim,y_fdim,x_pos-x_ctr_stop+1,y_pos-1,temp,REDUCE);
       INPROD(x_ctr_stop,0)
       }
-    } /* end TOP ROWS */   
+    } /* end TOP ROWS */
 
   y_ctr_start = y_pos;			      /* hold location of top */
   for (base_res_pos=res_pos, x_pos=x_start;   /* LEFT EDGE */
@@ -161,7 +160,7 @@ int internal_reduce(image, x_dim, y_dim, filt, temp, x_fdim, y_fdim,
   (*reflect)(filt,x_fdim,y_fdim,0,0,temp,REDUCE);
   for (;				      /* CENTER */
        x_pos<x_ctr_stop;
-       x_pos+=x_step, base_res_pos++) 
+       x_pos+=x_step, base_res_pos++)
     for (y_pos=y_ctr_start, res_pos=base_res_pos;
 	 y_pos<y_ctr_stop;
 	 y_pos+=y_step, res_pos+=x_res_dim)
@@ -180,7 +179,7 @@ int internal_reduce(image, x_dim, y_dim, filt, temp, x_fdim, y_fdim,
 
   for (res_pos-=(x_res_dim-1);
        y_pos<y_stop;			      /* BOTTOM ROWS */
-       y_pos+=y_step) 
+       y_pos+=y_step)
     {
     for (x_pos=x_start;			      /* BOTTOM-LEFT CORNER */
 	 x_pos<x_ctr_start;
@@ -193,12 +192,12 @@ int internal_reduce(image, x_dim, y_dim, filt, temp, x_fdim, y_fdim,
     (*reflect)(filt,x_fdim,y_fdim,0,y_pos-y_ctr_stop+1,temp,REDUCE);
     for (;				      /* BOTTOM EDGE */
 	 x_pos<x_ctr_stop;
-	 x_pos+=x_step, res_pos++) 
+	 x_pos+=x_step, res_pos++)
       INPROD(x_pos,y_ctr_stop)
 
     for (;				      /* BOTTOM-RIGHT CORNER */
 	 x_pos<x_stop;
-	 x_pos+=x_step, res_pos++) 
+	 x_pos+=x_step, res_pos++)
       {
       (*reflect)(filt,x_fdim,y_fdim,x_pos-x_ctr_stop+1,y_pos-y_ctr_stop+1,temp,REDUCE);
       INPROD(x_ctr_stop,y_ctr_stop)
@@ -214,7 +213,6 @@ int internal_reduce(image, x_dim, y_dim, filt, temp, x_fdim, y_fdim,
   convolve with FILT, adding values into RESULT array.  IMAGE
   dimensions should be ceil((stop-start)/step).  See
   description of internal_reduce (above).
-
   WARNING: this subroutine destructively modifies the RESULT array!
  ------------------------------------------------------------------------ */
 
@@ -243,9 +241,9 @@ int internal_expand(image,filt,temp,x_fdim,y_fdim,
   register image_type *result, *temp;
   register int x_fdim, x_dim;
   register int x_step, y_step;
-  register image_type *image; 
+  register image_type *image;
   int x_start, y_start;
-  image_type *filt; 
+  image_type *filt;
   int y_fdim, y_dim;
   char *edges;
   {
@@ -260,7 +258,7 @@ int internal_expand(image,filt,temp,x_fdim,y_fdim,
   int x_fmid = x_fdim/2;
   int y_fmid = y_fdim/2;
   int base_im_pos, x_im_dim = (x_stop-x_start+x_step-1)/x_step;
-  fptr reflect = edge_function(edges);  /* look up edge-handling function */	 
+  fptr reflect = edge_function(edges);  /* look up edge-handling function */
   int i,j;
 
   if (!reflect) return(-1);
@@ -299,17 +297,17 @@ int internal_expand(image,filt,temp,x_fdim,y_fdim,
     (*reflect)(filt,x_fdim,y_fdim,0,y_pos-1,temp,EXPAND);
     for (;				      /* TOP EDGE */
 	 x_pos<x_ctr_stop;
-	 x_pos+=x_step, im_pos++) 
+	 x_pos+=x_step, im_pos++)
       INPROD2(x_pos,0)
 
     for (;				      /* TOP-RIGHT CORNER */
 	 x_pos<x_stop;
-	 x_pos+=x_step, im_pos++) 
+	 x_pos+=x_step, im_pos++)
       {
       (*reflect)(filt,x_fdim,y_fdim,x_pos-x_ctr_stop+1,y_pos-1,temp,EXPAND);
       INPROD2(x_ctr_stop,0)
       }
-    }                                           /* end TOP ROWS */   
+    }                                           /* end TOP ROWS */
 
   y_ctr_start = y_pos;			      /* hold location of top */
   for (base_im_pos=im_pos, x_pos=x_start;     /* LEFT EDGE */
@@ -326,7 +324,7 @@ int internal_expand(image,filt,temp,x_fdim,y_fdim,
   (*reflect)(filt,x_fdim,y_fdim,0,0,temp,EXPAND);
   for (;				      /* CENTER */
        x_pos<x_ctr_stop;
-       x_pos+=x_step, base_im_pos++) 
+       x_pos+=x_step, base_im_pos++)
     for (y_pos=y_ctr_start, im_pos=base_im_pos;
 	 y_pos<y_ctr_stop;
 	 y_pos+=y_step, im_pos+=x_im_dim)
@@ -341,11 +339,11 @@ int internal_expand(image,filt,temp,x_fdim,y_fdim,
 	 y_pos<y_ctr_stop;
 	 y_pos+=y_step, im_pos+=x_im_dim)
       INPROD2(x_ctr_stop,y_pos)
-    }  
+    }
 
   for (im_pos-=(x_im_dim-1);
        y_pos<y_stop;			      /* BOTTOM ROWS */
-       y_pos+=y_step) 
+       y_pos+=y_step)
     {
     for (x_pos=x_start;			      /* BOTTOM-LEFT CORNER */
 	 x_pos<x_ctr_start;
@@ -358,12 +356,12 @@ int internal_expand(image,filt,temp,x_fdim,y_fdim,
     (*reflect)(filt,x_fdim,y_fdim,0,y_pos-y_ctr_stop+1,temp,EXPAND);
     for (;				      /* BOTTOM EDGE */
 	 x_pos<x_ctr_stop;
-	 x_pos+=x_step, im_pos++) 
+	 x_pos+=x_step, im_pos++)
       INPROD2(x_pos,y_ctr_stop)
 
     for (;				      /* BOTTOM-RIGHT CORNER */
 	 x_pos<x_stop;
-	 x_pos+=x_step, im_pos++) 
+	 x_pos+=x_step, im_pos++)
       {
       (*reflect)(filt,x_fdim,y_fdim,x_pos-x_ctr_stop+1,y_pos-y_ctr_stop+1,temp,EXPAND);
       INPROD2(x_ctr_stop,y_ctr_stop)
@@ -376,4 +374,3 @@ int internal_expand(image,filt,temp,x_fdim,y_fdim,
 /* Local Variables: */
 /* buffer-read-only: t */
 /* End: */
-
