@@ -6,11 +6,18 @@ import warnings
 import os
 import glob
 import numpy as np
+import platform
 
 # the wrapConv.so file can have some system information after it from the compiler, so we just find
 # whatever it is called
-libpath = glob.glob(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'wrapConv*.so'))
-# print(libpath)
+
+sysstr = platform.system()
+
+if sysstr == "Windows":
+    libpath = glob.glob(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'wrapConv*.dll'))
+else:
+    libpath = glob.glob(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'wrapConv*.so'))
+
 
 # load the c library
 if len(libpath) > 0:
